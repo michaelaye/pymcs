@@ -1,0 +1,5 @@
+[report]
+omit =
+    setup.py
+    pymcs/__main__.py
+    tests/*
