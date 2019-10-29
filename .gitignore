@@ -66,3 +66,6 @@ target/
 
 # New Pytest report
 junit.xml
+
+# ipynb checkpoints
+.ipynb_checkpoints
