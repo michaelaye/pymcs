@@ -69,3 +69,6 @@ junit.xml
 
 # ipynb checkpoints
 .ipynb_checkpoints
+
+# dask
+dask-worker-space
