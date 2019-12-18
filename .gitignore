@@ -72,3 +72,6 @@ junit.xml
 
 # dask
 dask-worker-space
+
+# mypy
+**/.mypy_cache
