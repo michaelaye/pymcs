@@ -75,3 +75,6 @@ dask-worker-space
 
 # mypy
 **/.mypy_cache
+
+# no parquet data to git
+**/*.parq*
