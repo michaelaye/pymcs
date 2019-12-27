@@ -13,10 +13,6 @@ with open('HISTORY.rst') as history_file:
 
 requirements = ['Click>=6.0', ]
 
-setup_requirements = ['pytest-runner', ]
-
-test_requirements = ['pytest', ]
-
 setup(
     name='pymcs',
     version='0.2.0',
@@ -46,7 +42,4 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.7',
     ],
-    test_suite='tests',
-    tests_require=test_requirements,
-    setup_requires=setup_requirements,
 )
