@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pymcs"
-version = '0.2.3'
+version = '0.2.4'
 description = "Python Tools for MRO MCS data analysis"
 authors = ["K.-Michael Aye <kmichael.aye@gmail.com>"]
 license = "BSD-3-Clause"
