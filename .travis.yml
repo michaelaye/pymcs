@@ -3,37 +3,19 @@
 
 language: python
 python:
-  - 3.7
+    - 3.7
 
+stages:
+    - Testing
+
+before_install:
+    - pip install poetry
 
 install:
-  - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
-  - bash miniconda.sh -b -p $HOME/miniconda
-  - export PATH="$HOME/miniconda/bin:$PATH"
-  - hash -r
-  - conda config --set always_yes yes
-  - conda update -q conda
-  - conda install conda-build anaconda-client pytest pytest-cov
-  - conda config --set auto_update_conda no
-  - conda build conda.recipe --no-test
-  - conda install --use-local pymcs
-  - conda info -a
+    - poetry install
 
-script:
-  - pytest -v --color=yes --cov=pymcs tests
-after_success:
-  - conda install -c conda-forge codecov
-  - codecov
-
-
-# After you create the Github repo and add it to Travis, run the
-# travis_pypi_setup.py script to finish PyPI deployment setup
-deploy:
-  provider: pypi
-  distributions: sdist bdist_wheel
-  user: michaelaye
-  password:
-    secure: PLEASE_REPLACE_ME
-  on:
-    tags: true
-    repo: michaelaye/pymcs
+jobs:
+    include:
+        - stage: Testing
+          script:
+              - pytest --cov
