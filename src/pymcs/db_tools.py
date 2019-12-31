@@ -33,7 +33,7 @@ def mcsdate2datetime(mcsdate):
     return dt(yyyy, mm, dd, hours, minutes, seconds, microsecs)
 
 
-class DATECONVERTER:
+class DateConverter:
     """Manage UTC ISO datetime to MCS date conversions.
 
         MCS has stored its data in the form of OBSDATE/OBSTIME, with OBSDATE
