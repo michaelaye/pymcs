@@ -33,7 +33,6 @@ Features
 Credits
 ---------
 
-This package was created with Cookiecutter_ and the forked `michaelaye/cookiecutter-pypackage-conda`_ project template.
+This package was created by using flit_.
 
-.. _Cookiecutter: https://github.com/audreyr/cookiecutter
-.. _`michaelaye/cookiecutter-pypackage-conda`: https://github.com/michaelaye/cookiecutter-pypackage-conda
+.. _flit: https://flit.readthedocs.io/
