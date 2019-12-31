@@ -1,13 +1,13 @@
-[tool.poetry]
-name = "pymcs"
-version = '0.2.4'
-description = "Python Tools for MRO MCS data analysis"
-authors = ["K.-Michael Aye <kmichael.aye@gmail.com>"]
+[tool.flit.metadata]
+module = "pymcs"
+# name = "pymcs"
+# description = "Python Tools for MRO MCS data analysis"
+description-file = "README.rst"
+author = "K.-Michael Aye"
+author-email = "kmichael.aye@gmail.com"
 license = "BSD-3-Clause"
-readme = "README.rst"
-repository = "https://github.com/michaelaye/pymcs"
-homepage = "https://github.com/michaelaye/pymcs"
-keywords = ["mars", "planetary", "atmosphere"]
+home-page = "https://github.com/michaelaye/pymcs"
+keywords = "mars,planetary,atmosphere"
 classifiers = [
     'Development Status :: 4 - Beta',
     'Intended Audience :: Developers',
@@ -18,21 +18,13 @@ classifiers = [
     'Programming Language :: Python :: 3.7',
     'Programming Language :: Python :: 3.8',
 ]
-
-[tool.poetry.dependencies]
-python = "^3.7"
-pandas = "^0.25.3"
-tqdm = "^4.41.0"
-cx_Oracle = "^7.3.0"
-
-[tool.poetry.dev-dependencies]
-black = "^19.10b0"
-pytest = "^5.3.2"
-pytest-cov = "^2.8.1"
-coverage = "^5.0.1"
-sphinx = "^2.3.1"
-wheel = "^0.33.6"
+requires = [
+    "pandas >=0.25",
+    "tqdm >=4.41",
+    "cx_Oracle >= 7.3",
+]
+requires-python = "~=3.7"
 
 [build-system]
-requires = ["poetry>=0.12"]
-build-backend = "poetry.masonry.api"
+requires = ["flit_core >=2,<3"]
+build-backend = "flit_core.buildapi"
