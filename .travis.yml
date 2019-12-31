@@ -9,10 +9,10 @@ stages:
     - Testing
 
 before_install:
-    - pip install poetry
+    - pip install flit
 
 install:
-    - poetry install
+    - flit install
 
 jobs:
     include:
