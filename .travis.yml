@@ -10,6 +10,7 @@ stages:
 
 before_install:
     - pip install flit
+    - pip install pytest-cov
 
 install:
     - flit install
