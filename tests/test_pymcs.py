@@ -7,4 +7,4 @@
 def test_version():
     from pymcs import __version__
 
-    assert __version__ == "0.3.1"
+    assert __version__ == "__version__ = '0.3.2'"
