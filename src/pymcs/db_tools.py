@@ -154,6 +154,12 @@ class SQLizer:
     def add_LS_bracket(self, LS1, LS2):
         self.add_condition(f"LS between {LS1} and {LS2}")
 
+    def add_LAT_bracket(self, lat1, lat2):
+        self.add_condition(f"LATITUDE between {lat1} and {lat2}")
+
+    def add_P_bracket(self, p1, p2):
+        self.add_condition(f"PRESSURE between {p1} and {p2}")
+
     def exact_utcdate(self, utcdate):
         "utcdate: YYYYMMDD"
         self.add_condition(f"obsdate = {utcdate}")
