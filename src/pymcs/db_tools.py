@@ -1,8 +1,9 @@
+import math
 from datetime import datetime as dt
 from pathlib import Path
-import math
 
 import cx_Oracle
+import numpy as np
 import pandas as pd
 
 mars_years = {
@@ -16,6 +17,33 @@ mars_years = {
     35: "2019-03-24T17:20:00",
     36: "2021-01-15T16:52:00",
 }
+
+
+tables = [
+    "MCS_HEADER_TEST",
+    "MCS_PROFILE_TEST",
+    "MCS_PROFILE_2D",
+    "MCS_HEADER_2D",
+    "MCS_NADIR",
+    "MCS_HEADER",
+    "MCS_PROFILE",
+    "MCS_LIMB",
+]
+
+views = ["MCS_HEADER_DATA", "MCS_PROFILE_DATA", "MCS_LIMB_DATA", "MCS_NADIR_DATA"]
+
+view_dic = {
+    "profile": views[1],
+    "header": views[0],
+    "limb": views[2],
+    "nadir": views[3],
+}
+
+
+def get_MY_bracket(MY):
+    t1 = mars_years[MY]
+    t2 = mars_years[MY + 1]
+    return (t1, t2)
 
 
 def mcsdate2datetime(mcsdate):
@@ -55,7 +83,7 @@ class DateConverter:
             Return datetime converted to MCS OBSDATE,OBSTIME
         """
 
-    OBSDATE_FMT = "%Y%M%d"
+    OBSDATE_FMT = "%Y%m%d"
 
     def __init__(self, utcdate=None, mcsdate=None):
         if not any([utcdate, mcsdate]):
@@ -86,23 +114,85 @@ class DateConverter:
         return (self.obsdate, self.obstime)
 
 
+def sqlize(self, dic):
+    "create SQL condition part from dictionary"
+    s = ""
+    for k, v in dic.items():
+        s += f"{k}={v} and "
+    # cut off last 'and '
+    return s[:-5]
+
+
+class SQLizer:
+    def __init__(self, columns, view, cond=None):
+        self.columns = columns + "obstime obsdate ls".split()
+        self.view = view_dic[view]
+        self.cond = cond
+        self.condition_started = False
+        self.start_sql()
+
+    def start_sql(self):
+        self.sql = f"select {','.join(self.columns)} from {self.view} "
+        if self.cond is not None:
+            self.sql += f"{self.cond}"
+            self.condition_started = True
+
+    def add_condition(self, condition):
+        "Default here is to add conditions with logical AND."
+        first_word = "and"
+        if not self.condition_started:
+            first_word = "where"
+            self.condition_started = True
+        self.sql += f"{first_word} {condition}"
+
+    def add_day_bracket(self, t1, t2):
+        datecon1 = DateConverter(utcdate=t1)
+        datecon2 = DateConverter(utcdate=t2)
+        self.add_condition(
+            f"obsdate between {datecon1.obsdate} and {datecon2.obsdate} "
+        )
+
+    def add_MY_day_bracket(self, MY):
+        t1, t2 = get_MY_bracket(MY)
+        self.add_day_bracket(t1, t2)
+
+    def add_LS_bracket(self, LS1, LS2):
+        self.add_condition(f"LS between {LS1} and {LS2} ")
+
+    def exact_utcdate(self, utcdate):
+        "utcdate: YYYYMMDD"
+        self.add_condition(f"obsdate = {utcdate}")
+
+    def __str__(self):
+        return self.sql
+
+    def __repr__(self):
+        return self.__str__()
+
+
+def add_utc_col(df, drop_mcsdate=True):
+    "Must have OBSDATE and OBSTIME column."
+    date = pd.to_datetime(df.OBSDATE.astype(str), format="%Y%m%d").astype("str")
+    fractionals, intseconds = np.modf(df.OBSTIME)
+    hours = (intseconds // 3600).astype("int").astype("str")
+    minutes = ((intseconds % 3600) // 60).astype("int").astype("str")
+    seconds = (intseconds % 3600 % 60).astype("int").astype("str")
+    microsecs = (fractionals * 1e6).astype("int").astype("str")
+    newdf = df.assign(
+        UTC=pd.to_datetime(
+            date + " " + hours + ":" + minutes + ":" + seconds + "." + microsecs
+        )
+    )
+    if drop_mcsdate:
+        newdf.drop(['OBSDATE', 'OBSTIME'], axis='columns', inplace=True)
+    return newdf
+
+
 class MCSDB:
     inifile = Path.home() / ".mcs_db.ini"
     example_sql = """select temperature from mcs_data_2d
     where obsdate = 20070101 and obstime = 14486.727
     """
-    views = ["MCS_HEADER_DATA", "MCS_PROFILE_DATA", "MCS_LIMB_DATA", "MCS_NADIR_DATA"]
-    tables = [
-        "MCS_HEADER_TEST",
-        "MCS_PROFILE_TEST",
-        "MCS_PROFILE_2D",
-        "MCS_HEADER_2D",
-        "MCS_NADIR",
-        "MCS_HEADER",
-        "MCS_PROFILE",
-        "MCS_LIMB",
-    ]
-    d = {"profile": views[1], "header": views[0], "limb": views[2], "nadir": views[3]}
 
     def __init__(self):
         with self.inifile.open() as f:
@@ -137,14 +227,6 @@ class MCSDB:
     def query(self, sql):
         "most basic method, using pure SQL, returning pandas DataFrame."
         return pd.read_sql(sql, self.con)
-
-    def sqlize(self, dic):
-        "create SQL condition part from dictionary"
-        s = ""
-        for k, v in dic.items():
-            s += f"{k}={v} and "
-        # cut off last 'and '
-        return s[:-5]
 
     def get_cols_by_date(self, cols, datestr):
         sql = f"select {','.join(cols)} from mcs_data_2d where "
