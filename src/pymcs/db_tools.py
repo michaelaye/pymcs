@@ -125,16 +125,13 @@ def sqlize(self, dic):
 
 class SQLizer:
     def __init__(self, columns, view, cond=None):
-        self.columns = columns + "obstime obsdate ls".split()
+        self.columns = columns + "obsdate obstime ls".split()
         self.view = view_dic[view]
         self.cond = cond
         self.condition_started = False
-        self.start_sql()
-
-    def start_sql(self):
-        self.sql = f"select {','.join(self.columns)} from {self.view} "
+        self.bucket = [f"select {','.join(self.columns)} from {self.view}"]
         if self.cond is not None:
-            self.sql += f"{self.cond}"
+            self.bucket.append(f"where {self.cond}")
             self.condition_started = True
 
     def add_condition(self, condition):
@@ -143,25 +140,27 @@ class SQLizer:
         if not self.condition_started:
             first_word = "where"
             self.condition_started = True
-        self.sql += f"{first_word} {condition}"
+        self.bucket.append(f"{first_word} {condition}")
 
     def add_day_bracket(self, t1, t2):
         datecon1 = DateConverter(utcdate=t1)
         datecon2 = DateConverter(utcdate=t2)
-        self.add_condition(
-            f"obsdate between {datecon1.obsdate} and {datecon2.obsdate} "
-        )
+        self.add_condition(f"obsdate between {datecon1.obsdate} and {datecon2.obsdate}")
 
     def add_MY_day_bracket(self, MY):
         t1, t2 = get_MY_bracket(MY)
         self.add_day_bracket(t1, t2)
 
     def add_LS_bracket(self, LS1, LS2):
-        self.add_condition(f"LS between {LS1} and {LS2} ")
+        self.add_condition(f"LS between {LS1} and {LS2}")
 
     def exact_utcdate(self, utcdate):
         "utcdate: YYYYMMDD"
         self.add_condition(f"obsdate = {utcdate}")
+
+    @property
+    def sql(self):
+        return "\n".join(self.bucket)
 
     def __str__(self):
         return self.sql
@@ -184,7 +183,7 @@ def add_utc_col(df, drop_mcsdate=True):
         )
     )
     if drop_mcsdate:
-        newdf.drop(['OBSDATE', 'OBSTIME'], axis='columns', inplace=True)
+        newdf.drop(["OBSDATE", "OBSTIME"], axis="columns", inplace=True)
     return newdf
 
 

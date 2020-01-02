@@ -57,12 +57,44 @@ def test_DateConverter_set_datetime():
     assert datecon.utcdate == "2013-08-01T18:44:00"
 
 
-def test_SQLizer():
-    sqlizer = db_tools.SQLizer(["obsdate", "obstime"], "profile", "obsdate = 20070101")
-    sqlizer.start_sql()
+def test_SQLizer_header_default():
+    sqlizer = db_tools.SQLizer(columns=[], view="header")
+    assert sqlizer.sql == "select obsdate,obstime,ls from MCS_HEADER_DATA"
+
+
+def test_SQLizer_profile_default():
+    sqlizer = db_tools.SQLizer(columns=[], view="profile")
+    assert sqlizer.sql == "select obsdate,obstime,ls from MCS_PROFILE_DATA"
+
+
+def test_SQLizer_header_with_cols_():
+    sqlizer = db_tools.SQLizer(columns=["tnadir"], view="header")
+    assert sqlizer.sql == "select tnadir,obsdate,obstime,ls from MCS_HEADER_DATA"
+
+
+def test_SQLizer_condition():
+    sqlizer = db_tools.SQLizer(columns=[], view="profile", cond="obsdate=20070101")
     assert (
         sqlizer.sql
-        == "select obsdate,obstime from MCS_PROFILE_DATA where obsdate = 20070101"
+        == "select obsdate,obstime,ls from MCS_PROFILE_DATA\nwhere obsdate=20070101"
+    )
+
+
+def test_SQLIZER_add_MY_bracket():
+    sqlizer = db_tools.SQLizer(columns=[], view="profile")
+    sqlizer.add_MY_day_bracket(30)
+    assert (
+        sqlizer.sql
+        == "select obsdate,obstime,ls from MCS_PROFILE_DATA\nwhere obsdate between 20091026 and 20110913"
+    )
+
+
+def test_SQLIZER_add_LS_bracket():
+    sqlizer = db_tools.SQLizer(columns=[], view="profile")
+    sqlizer.add_LS_bracket(210, 220)
+    assert (
+        sqlizer.sql
+        == "select obsdate,obstime,ls from MCS_PROFILE_DATA\nwhere LS between 210 and 220"
     )
 
 
