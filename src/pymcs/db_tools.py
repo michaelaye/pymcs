@@ -231,7 +231,10 @@ class MCSDB:
 
     def query(self, sql):
         "most basic method, using pure SQL, returning pandas DataFrame."
-        return pd.read_sql(sql, self.con)
+        try:
+            return pd.read_sql(sql.sql, self.con)
+        except AttributeError:
+            return pd.read_sql(sql, self.con)
 
     def get_cols_by_date(self, cols, datestr):
         sql = f"select {','.join(cols)} from mcs_data_2d where "
