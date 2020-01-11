@@ -1,12 +1,15 @@
 import math
+from collections import OrderedDict
+from datetime import date
 from datetime import datetime as dt
+from datetime import timedelta
 from pathlib import Path
 
 import cx_Oracle
 import numpy as np
 import pandas as pd
 
-mars_years = {
+d = {
     28: "2006-01-21T20:35:00",
     29: "2007-12-09T20:06:00",
     30: "2009-10-26T19:39:00",
@@ -18,6 +21,7 @@ mars_years = {
     36: "2021-01-15T16:52:00",
 }
 
+mars_years = OrderedDict(sorted(d.items(), key=lambda t: t[0]))
 
 tables = [
     "MCS_HEADER_TEST",
@@ -46,6 +50,15 @@ def get_MY_bracket(MY):
     return (t1, t2)
 
 
+def get_MY_for_date(date):
+    "date: YYYYMMDD"
+    for k, v in mars_years.items():
+        datestr = v.split("T")[0]
+        datestr = datestr.replace("-", "")
+        if int(date) < int(datestr):
+            return k - 1
+
+
 def mcsdate2datetime(mcsdate):
     "Convert (OBSDATE,OBSTIME) tuple to Python datetime."
     date, seconds = mcsdate
@@ -59,6 +72,33 @@ def mcsdate2datetime(mcsdate):
     seconds = int(intseconds % 3600 % 60)
     microsecs = int(fractionals * 1e6)
     return dt(yyyy, mm, dd, hours, minutes, seconds, microsecs)
+
+
+class MarsTimer:
+    days_per_year = 686
+    MCS_day_format = "%Y%m%d"
+    def __init__(self):
+        for k, v in mars_years.items():
+            setattr(self, f"MY{k}", dt.fromisoformat(v))
+
+    def get_date_for_Ls(self, Ls, MY):
+        t = getattr(self, f"MY{MY}")
+        delta = timedelta(days=self.calc_ndays_for_Ls(Ls))
+        return t + delta
+
+    def get_MCS_date_for_Ls(self, Ls, MY):
+        dt = self.get_date_for_Ls(Ls, MY)
+        return dt.strftime(self.MCS_day_format)
+
+    def calc_ndays_for_Ls(self, Ls):
+        return round(Ls / 360 * self.days_per_year)
+
+    def get_n_MCS_days_later(self, daystring, n=1):
+        delta_days = timedelta(days=n)
+        old_date = date(int(daystring[:4]), int(daystring[4:6]), int(daystring[6:]))
+        new_date = old_date + delta_days
+        return new_date.strftime(self.MCS_day_format)
+
 
 
 class DateConverter:
