@@ -75,23 +75,31 @@ def mcsdate2datetime(mcsdate):
 
 
 class MarsTimer:
-    days_per_year = 686
     MCS_day_format = "%Y%m%d"
+
     def __init__(self):
         for k, v in mars_years.items():
             setattr(self, f"MY{k}", dt.fromisoformat(v))
 
     def get_date_for_Ls(self, Ls, MY):
         t = getattr(self, f"MY{MY}")
-        delta = timedelta(days=self.calc_ndays_for_Ls(Ls))
+        delta = timedelta(days=round(self.calc_ndays_for_Ls(Ls, MY)))
         return t + delta
+
+    def get_ndays_for_MY(self, MY):
+        date1 = dt.fromisoformat(mars_years[MY])
+        date2 = dt.fromisoformat(mars_years[MY + 1])
+        delta = (date2 - date1).days
+        return delta
 
     def get_MCS_date_for_Ls(self, Ls, MY):
         dt = self.get_date_for_Ls(Ls, MY)
         return dt.strftime(self.MCS_day_format)
 
-    def calc_ndays_for_Ls(self, Ls):
-        return round(Ls / 360 * self.days_per_year)
+    def calc_ndays_for_Ls(self, Ls, MY):
+        fraction = Ls / 360
+        n_days = self.get_ndays_for_MY(MY)
+        return n_days * fraction
 
     def get_n_MCS_days_later(self, daystring, n=1):
         delta_days = timedelta(days=n)
@@ -100,28 +108,27 @@ class MarsTimer:
         return new_date.strftime(self.MCS_day_format)
 
 
-
 class DateConverter:
     """Manage UTC ISO datetime to MCS date conversions.
 
-        MCS has stored its data in the form of OBSDATE/OBSTIME, with OBSDATE
-        being an integer in the form YYYYMMDD and OBSTIME in total seconds of
-        the date (i.e. 0...(3600*24=86,400)).
+    MCS has stored its data in the form of OBSDATE/OBSTIME, with OBSDATE
+    being an integer in the form YYYYMMDD and OBSTIME in total seconds of
+    the date (i.e. 0...(3600*24=86,400)).
 
-        Parameters
-        ----------
-        utcdate : str,datetime
-            UTC datetime
-        mcsdate : tuple(int, float)
-            Tuple of (OBSDATE, OBSTIME)
+    Parameters
+    ----------
+    utcdate : str,datetime
+        UTC datetime
+    mcsdate : tuple(int, float)
+        Tuple of (OBSDATE, OBSTIME)
 
-        Attributes
-        ----------
-        utcdate : str
-            Return datetime.isoformat()
-        mcsdate : tuple
-            Return datetime converted to MCS OBSDATE,OBSTIME
-        """
+    Attributes
+    ----------
+    utcdate : str
+        Return datetime.isoformat()
+    mcsdate : tuple
+        Return datetime converted to MCS OBSDATE,OBSTIME
+    """
 
     OBSDATE_FMT = "%Y%m%d"
 
@@ -235,7 +242,7 @@ def add_utc_col(df, drop_mcsdate=True):
 
 class MCSDB:
     inifile = Path.home() / ".mcs_db.ini"
-    example_sql = """select temperature from mcs_data_2d
+    example_sql = """select temperature from mcs_profile_data
     where obsdate = 20070101 and obstime = 14486.727
     """
 
@@ -277,7 +284,16 @@ class MCSDB:
             return pd.read_sql(sql, self.con)
 
     def get_cols_by_date(self, cols, datestr):
+        "Deprecated. Use get_profile_cols_by_date."
         sql = f"select {','.join(cols)} from mcs_data_2d where "
+        sql += f"obsdate = {datestr}"
+        print("Sending this request:")
+        print(sql)
+        return self.query(sql)
+
+    def get_profile_cols_by_date(self, cols, datestr):
+        "Deprecated. Use get_profile_cols_by_date."
+        sql = f"select {','.join(cols)} from mcs_profile_data where "
         sql += f"obsdate = {datestr}"
         print("Sending this request:")
         print(sql)
