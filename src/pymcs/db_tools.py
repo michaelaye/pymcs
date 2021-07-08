@@ -262,19 +262,19 @@ class MCSDB:
 
     @property
     def header_columns(self):
-        return self.get_columns("mcs_header_data")
+        return pd.Index(sorted(self.get_columns("mcs_header_data")))
 
     @property
     def profile_columns(self):
-        return self.get_columns("mcs_profile_data")
+        return pd.Index(sorted(self.get_columns("mcs_profile_data")))
 
     @property
     def limb_columns(self):
-        return self.get_columns("mcs_limb_data")
+        return pd.Index(sorted(self.get_columns("mcs_limb_data")))
 
     @property
     def nadir_columns(self):
-        return self.get_columns("mcs_nadir_data")
+        return pd.Index(sorted(self.get_columns("mcs_nadir_data")))
 
     def query(self, sql):
         "most basic method, using pure SQL, returning pandas DataFrame."
