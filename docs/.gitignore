@@ -1,3 +1,2 @@
-/pymcs.rst
-/pymcs.*.rst
-/modules.rst
+_site/
+.netlify/
