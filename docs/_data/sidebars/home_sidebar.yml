@@ -10,17 +10,14 @@ entries:
       title: Overview
       url: /
     - output: web,pdf
-      title: Converters for working with MCS data
+      title: Converter utils for MCS data
       url: converters.html
     - output: web,pdf
       title: db_tools
       url: db_tools.html
     - output: web,pdf
-      title: Default Title (change me)
+      title: '`io` module'
       url: io.html
-    - output: web,pdf
-      title: Title
-      url: MSC_sql_test.html
     output: web
     title: pymcs
   output: web

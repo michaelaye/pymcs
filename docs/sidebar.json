@@ -1,9 +1,8 @@
 {
   "pymcs": {
     "Overview": "/",
-    "Converters for working with MCS data": "converters.html",
+    "Converter utils for MCS data": "converters.html",
     "db_tools": "db_tools.html",
-    "Default Title (change me)": "io.html",
-    "Title": "MSC_sql_test.html"
+    "`io` module": "io.html"
   }
 }

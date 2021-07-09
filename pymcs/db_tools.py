@@ -27,9 +27,7 @@ d = {
     35: "2019-03-24T17:20:00",
     36: "2021-01-15T16:52:00",
 }
-
-# Cell
-mars_years = OrderedDict(sorted(d.items(), key=lambda t: t[0]))
+mars_years = OrderedDict(d)
 
 # Cell
 tables = [
@@ -48,8 +46,8 @@ views = ["MCS_HEADER_DATA", "MCS_PROFILE_DATA", "MCS_LIMB_DATA", "MCS_NADIR_DATA
 
 # Cell
 view_dic = {
-    "profile": views[1],
     "header": views[0],
+    "profile": views[1],
     "limb": views[2],
     "nadir": views[3],
 }

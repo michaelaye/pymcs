@@ -202,7 +202,7 @@ document.addEventListener("DOMContentLoaded", function() {
           
           
           
-          <li><a href="/pymcs/converters.html">Converters for working with MCS data</a></li>
+          <li><a href="/pymcs/converters.html">Converter utils for MCS data</a></li>
           
           
           
@@ -216,14 +216,7 @@ document.addEventListener("DOMContentLoaded", function() {
           
           
           
-          <li><a href="/pymcs/io.html">Default Title (change me)</a></li>
-          
-          
-          
-          
-          
-          
-          <li><a href="/pymcs/MSC_sql_test.html">Title</a></li>
+          <li><a href="/pymcs/io.html">`io` module</a></li>
           
           
           
@@ -318,6 +311,13 @@ $('#toc').on('click', 'a', function() {
 </div>
     
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Setting up a dictionary with the Mars year definitions:</p>
+
+</div>
+</div>
+</div>
     
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -328,6 +328,40 @@ $('#toc').on('click', 'a', function() {
     
     
 <div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">mars_years</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>OrderedDict([(28, &#39;2006-01-21T20:35:00&#39;),
+             (29, &#39;2007-12-09T20:06:00&#39;),
+             (30, &#39;2009-10-26T19:39:00&#39;),
+             (31, &#39;2011-09-13T19:12:00&#39;),
+             (32, &#39;2013-08-01T18:44:00&#39;),
+             (33, &#39;2015-06-19T18:16:00&#39;),
+             (34, &#39;2017-05-05T17:48:00&#39;),
+             (35, &#39;2019-03-24T17:20:00&#39;),
+             (36, &#39;2021-01-15T16:52:00&#39;)])</pre>
+</div>
+
+</div>
+
+</div>
+</div>
 
 </div>
     
@@ -364,7 +398,7 @@ $('#toc').on('click', 'a', function() {
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_MY_bracket" class="doc_header"><code>get_MY_bracket</code><a href="https://github.com/michaelaye/pymcs/tree/master/pymcs/db_tools.py#L58" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_MY_bracket</code>(<strong><code>MY</code></strong>)</p>
+<h4 id="get_MY_bracket" class="doc_header"><code>get_MY_bracket</code><a href="https://github.com/michaelaye/pymcs/tree/master/pymcs/db_tools.py#L56" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_MY_bracket</code>(<strong><code>MY</code></strong>)</p>
 </blockquote>
 
 </div>
@@ -395,7 +429,7 @@ $('#toc').on('click', 'a', function() {
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="get_MY_for_date" class="doc_header"><code>get_MY_for_date</code><a href="https://github.com/michaelaye/pymcs/tree/master/pymcs/db_tools.py#L64" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_MY_for_date</code>(<strong><code>date</code></strong>)</p>
+<h4 id="get_MY_for_date" class="doc_header"><code>get_MY_for_date</code><a href="https://github.com/michaelaye/pymcs/tree/master/pymcs/db_tools.py#L62" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>get_MY_for_date</code>(<strong><code>date</code></strong>)</p>
 </blockquote>
 
 <pre><code>date: YYYYMMDD</code></pre>
@@ -428,7 +462,7 @@ $('#toc').on('click', 'a', function() {
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="mcsdate2datetime" class="doc_header"><code>mcsdate2datetime</code><a href="https://github.com/michaelaye/pymcs/tree/master/pymcs/db_tools.py#L73" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>mcsdate2datetime</code>(<strong><code>mcsdate</code></strong>)</p>
+<h4 id="mcsdate2datetime" class="doc_header"><code>mcsdate2datetime</code><a href="https://github.com/michaelaye/pymcs/tree/master/pymcs/db_tools.py#L71" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>mcsdate2datetime</code>(<strong><code>mcsdate</code></strong>)</p>
 </blockquote>
 
 <pre><code>Convert (OBSDATE,OBSTIME) tuple to Python datetime.</code></pre>
@@ -461,7 +495,7 @@ $('#toc').on('click', 'a', function() {
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="MarsTimer" class="doc_header"><code>class</code> <code>MarsTimer</code><a href="https://github.com/michaelaye/pymcs/tree/master/pymcs/db_tools.py#L88" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MarsTimer</code>()</p>
+<h2 id="MarsTimer" class="doc_header"><code>class</code> <code>MarsTimer</code><a href="https://github.com/michaelaye/pymcs/tree/master/pymcs/db_tools.py#L86" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MarsTimer</code>()</p>
 </blockquote>
 
 </div>
@@ -492,7 +526,7 @@ $('#toc').on('click', 'a', function() {
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="DateConverter" class="doc_header"><code>class</code> <code>DateConverter</code><a href="https://github.com/michaelaye/pymcs/tree/master/pymcs/db_tools.py#L122" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>DateConverter</code>(<strong><code>utcdate</code></strong>=<em><code>None</code></em>, <strong><code>mcsdate</code></strong>=<em><code>None</code></em>)</p>
+<h2 id="DateConverter" class="doc_header"><code>class</code> <code>DateConverter</code><a href="https://github.com/michaelaye/pymcs/tree/master/pymcs/db_tools.py#L120" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>DateConverter</code>(<strong><code>utcdate</code></strong>=<em><code>None</code></em>, <strong><code>mcsdate</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 
 <pre><code>Manage UTC ISO datetime to MCS date conversions.
@@ -543,7 +577,7 @@ mcsdate : tuple
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="sqlize" class="doc_header"><code>sqlize</code><a href="https://github.com/michaelaye/pymcs/tree/master/pymcs/db_tools.py#L175" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>sqlize</code>(<strong><code>dic</code></strong>)</p>
+<h4 id="sqlize" class="doc_header"><code>sqlize</code><a href="https://github.com/michaelaye/pymcs/tree/master/pymcs/db_tools.py#L173" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>sqlize</code>(<strong><code>dic</code></strong>)</p>
 </blockquote>
 
 <pre><code>create SQL condition part from dictionary</code></pre>
@@ -576,7 +610,7 @@ mcsdate : tuple
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="SQLizer" class="doc_header"><code>class</code> <code>SQLizer</code><a href="https://github.com/michaelaye/pymcs/tree/master/pymcs/db_tools.py#L184" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>SQLizer</code>(<strong><code>columns</code></strong>, <strong><code>view</code></strong>, <strong><code>cond</code></strong>=<em><code>None</code></em>)</p>
+<h2 id="SQLizer" class="doc_header"><code>class</code> <code>SQLizer</code><a href="https://github.com/michaelaye/pymcs/tree/master/pymcs/db_tools.py#L182" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>SQLizer</code>(<strong><code>columns</code></strong>, <strong><code>view</code></strong>, <strong><code>cond</code></strong>=<em><code>None</code></em>)</p>
 </blockquote>
 
 </div>
@@ -607,7 +641,7 @@ mcsdate : tuple
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h4 id="add_utc_col" class="doc_header"><code>add_utc_col</code><a href="https://github.com/michaelaye/pymcs/tree/master/pymcs/db_tools.py#L236" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>add_utc_col</code>(<strong><code>df</code></strong>, <strong><code>drop_mcsdate</code></strong>=<em><code>True</code></em>)</p>
+<h4 id="add_utc_col" class="doc_header"><code>add_utc_col</code><a href="https://github.com/michaelaye/pymcs/tree/master/pymcs/db_tools.py#L234" class="source_link" style="float:right">[source]</a></h4><blockquote><p><code>add_utc_col</code>(<strong><code>df</code></strong>, <strong><code>drop_mcsdate</code></strong>=<em><code>True</code></em>)</p>
 </blockquote>
 
 <pre><code>Must have OBSDATE and OBSTIME column.</code></pre>
@@ -640,7 +674,7 @@ mcsdate : tuple
 
 
 <div class="output_markdown rendered_html output_subarea ">
-<h2 id="MCSDB" class="doc_header"><code>class</code> <code>MCSDB</code><a href="https://github.com/michaelaye/pymcs/tree/master/pymcs/db_tools.py#L254" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MCSDB</code>()</p>
+<h2 id="MCSDB" class="doc_header"><code>class</code> <code>MCSDB</code><a href="https://github.com/michaelaye/pymcs/tree/master/pymcs/db_tools.py#L252" class="source_link" style="float:right">[source]</a></h2><blockquote><p><code>MCSDB</code>()</p>
 </blockquote>
 
 </div>
